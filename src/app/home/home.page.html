@@ -1,20 +1,35 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title>Weather App</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-input [(ngModel)]="cityName" placeholder="Enter city name"></ion-input>
+    <ion-button (click)="loadWeatherByCity()">Search</ion-button>
+  </ion-item>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <ion-button (click)="loadWeatherByLatLong()">Use My Location</ion-button>
+
+    <p>Test push 1</p>
+  <div *ngIf="weatherData">
+    <h2>{{ weatherData.name }}</h2>
+    <p>{{ weatherData.main.temp }}°C</p>
+    <p>Condition: {{ weatherData.weather?.[0]?.description || weatherData.current?.weather[0].description }}</p>
+
+    <h2>Hourly Forecast</h2>
+    <ion-list>
+      <ion-item *ngFor="let hour of weatherData.hourly?.slice(0, 5)">
+        <p>{{hour.dt}} {{ hour.temp }}°C - {{ hour.weather[0].description }}</p>
+      </ion-item>
+    </ion-list>
+
+    <h2>5-Day Forecast</h2>
+    <ion-list>
+      <ion-item *ngFor="let day of weatherData.daily?.slice(0, 5)">
+        <p>{{ day.temp.day }}°C - {{ day.weather[0].description }}</p>
+      </ion-item>
+    </ion-list>
   </div>
 </ion-content>
