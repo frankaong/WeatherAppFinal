@@ -1,35 +1,84 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Weather App - V2 Check</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content class="ion-padding">
-  <ion-item>
-    <ion-input [(ngModel)]="cityName" placeholder="Enter city name"></ion-input>
-    <ion-button (click)="loadWeatherByCity()">Search</ion-button>
-  </ion-item>
-
-  <ion-button (click)="loadWeatherByLatLong()">Use My Location</ion-button>
-
-    <p>Test push 1</p>
-  <div *ngIf="weatherData">
-    <h2>{{ weatherData.name }}</h2>
-    <p>{{ weatherData.main.temp }}°C</p>
-    <p>Condition: {{ weatherData.weather?.[0]?.description || weatherData.current?.weather[0].description }}</p>
-
-    <h2>Hourly Forecast</h2>
-    <ion-list>
-      <ion-item *ngFor="let hour of weatherData.hourly?.slice(0, 5)">
-        <p>{{hour.dt}} {{ hour.temp }}°C - {{ hour.weather[0].description }}</p>
-      </ion-item>
-    </ion-list>
-
-    <h2>5-Day Forecast</h2>
-    <ion-list>
-      <ion-item *ngFor="let day of weatherData.daily?.slice(0, 5)">
-        <p>{{ day.temp.day }}°C - {{ day.weather[0].description }}</p>
-      </ion-item>
-    </ion-list>
+  <div class="search_fab">
+    <ion-searchbar [(ngModel)]="cityName" (ionSearch)="loadWeatherByCity()" (keyup.enter)="loadWeatherByCity()">
+    </ion-searchbar>
+  
+    <ion-fab class="fab-right">
+      <ion-fab-button class="settings-fab">
+        <ion-icon name="settings-outline"></ion-icon>
+      </ion-fab-button>
+  
+      <ion-fab-list side="bottom">
+        <ion-fab-button (click)="toggleTemperatureUnit()" color="light">
+          <ion-icon name="thermometer-outline"></ion-icon>
+        </ion-fab-button>
+        
+        <ion-fab-button (click)="changeTheme()">
+          <ion-icon [name]="darkMode ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+        </ion-fab-button>
+  
+        <ion-fab-button (click)="toggleOfflineMode()">
+          <ion-icon [name]="offlineMode ? 'cloud-offline-outline' : 'cloud-outline'"></ion-icon>
+        </ion-fab-button>
+      </ion-fab-list>
+    </ion-fab>
   </div>
+  
+
+  <div *ngIf="loading" class="loading-screen">
+    <ion-spinner name="dots"></ion-spinner>
+    <p>Loading...</p>
+  </div>
+
+  <div *ngIf="!loading">
+    <div *ngIf="weatherData">
+      <div class="main_info">
+        <h2 id="city"> {{ weatherData.name }}</h2>
+        <p id="tempc"> {{ weatherData.main.temp }}°</p>
+        <h3 id="desc">{{ weatherData.weather[0].description }}</h3>
+        <!-- {{ tempUnit ? 'F' : 'C' }} -->
+        <div class="main_info_addtl">
+          <p id="maxtemp"> H: {{ weatherData.main.temp_max}}°</p>
+          <p id="mintemp"> L: {{ weatherData.main.temp_min}}°</p>
+        </div>
+      </div>
+  </div>
+
+  <div *ngIf="onecallWeatherData">
+
+  <swiper-container slides-per-view="4" space-between="10" class="hourly-swiper">
+    <swiper-slide *ngFor="let hour of onecallWeatherData?.hourly" class="hourly-item">
+      <div class="hourly-content">
+        <p id="hour">{{ getHour(hour.dt) }}</p>
+        <img [src]="'https://openweathermap.org/img/wn/' + hour.weather[0].icon + '@2x.png'" id="image" />
+        <p id="temph">{{ hour.temp }}°</p>
+      </div>
+    </swiper-slide>
+  </swiper-container>
+  
+    <div class="daily_forecast">
+      <ion-list>
+        <h2>5-Day Forecast</h2>
+        <ion-item *ngFor="let day of onecallWeatherData?.daily?.slice(0, 5); let last = last" [lines]="last ? 'none' : 'full'" id="daily_info">
+          <p id="date">{{ getDate(day.dt) }}</p>
+          <img [src]="'https://openweathermap.org/img/wn/' + day.weather[0].icon + '@2x.png'" id="imaged">
+          <p id="tempd">L: {{ day.temp?.min || day.temp?.day }}° - H: {{ day.temp?.max || day.temp?.day }}°</p>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <div class="added_info">
+      <div id="addinfo">
+        <h2>Feels Like</h2>
+        <p>{{ onecallWeatherData.current.feels_like }}°</p>
+      </div>
+      <div id="addinfo">
+        <h2>Humidity</h2>
+        <p>{{ onecallWeatherData.current.pressure }} hPa</p>
+      </div> 
+    </div>
+
+  </div>
+
+</div>
 </ion-content>

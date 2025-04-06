@@ -9,6 +9,68 @@
  * https://ionicframework.com/docs/layout/global-stylesheets
  */
 
+ion-content {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    --background: url('./assets/2.png') no-repeat left 40%;  
+    --background-size: contain;  
+    --color: #ffffff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+  }
+  
+  ion-item::part(native) {
+    background-color: transparent;
+    box-shadow: none !important;
+    color: #ffffff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+  }
+  
+
+.dark {
+    --background: url('./assets/1.png') no-repeat left 40%;  
+    --background-size: contain; 
+}
+
+.dark ion-searchbar {
+    --icon-color: #d4d4d4;
+    --placeholder-color: #ffffff;
+    --color: #d4d4d4;
+}
+
+.dark .main_info #desc {
+    color: #d3d2d2; 
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4); 
+  }
+
+.dark swiper-container.hourly-swiper {
+    background: rgba(19, 35, 32, 0.5);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.11);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+}
+
+.dark .daily_forecast ion-list {
+    background: rgba(19, 35, 32, 0.5);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.11);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+}
+
+.dark .added_info #addinfo {
+    background: rgba(19, 35, 32, 0.5);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.11);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+  }
+  
+  
+.dark ion-fab-button.settings-fab {
+    --color: #d4d4d4; 
+  }  
+  
 /* Core CSS required for Ionic components to work properly */
 @import "@ionic/angular/css/core.css";
 
