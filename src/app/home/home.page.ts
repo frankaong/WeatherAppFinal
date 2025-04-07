@@ -41,9 +41,11 @@ export class HomePage implements OnInit {
   
     if (this.offlineMode) {
       this.loadCachedWeather();
-    } else if (this.isOnline) {
+    } 
+    else if (this.isOnline) {
       this.loadWeatherByLatLong();
-    } else {
+    } 
+    else {
       this.loadCachedWeather();
     }
   }
